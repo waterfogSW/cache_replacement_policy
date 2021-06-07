@@ -7,7 +7,8 @@
 using namespace std;
 
 void FIFO(int size, string a) {
-    char buf[a.length() + 1];
+    int     hit = 0;
+    char    buf[a.length() + 1];
     strcpy(buf, a.c_str());
 
     vector<char> cache;
@@ -15,6 +16,7 @@ void FIFO(int size, string a) {
     {
         cout << buf[i];
         if(find(cache.begin(),cache.end(),buf[i]) != cache.end()) {
+            hit++;
             cout << "  hit     ";
         } 
         else {
@@ -34,10 +36,13 @@ void FIFO(int size, string a) {
         }
         cout << endl;
     }
+    cout << "Hit : " << hit << " Miss : " << a.length() - hit << endl;
+    cout << "Hit ratio : " << hit / (float)a.length() << endl;
 }
 
 void LRU(int size, string a) {
-    char buf[a.length() + 1];
+    int     hit = 0;
+    char    buf[a.length() + 1];
     strcpy(buf, a.c_str());
 
     vector<char> cache;
@@ -46,6 +51,7 @@ void LRU(int size, string a) {
         cout << buf[i];
         vector<char>::iterator it = find(cache.begin(),cache.end(),buf[i]);
         if(it != cache.end()) {
+            hit++;
             cout << "  hit     ";
             cache.erase(it);
             cache.push_back(buf[i]);
@@ -67,10 +73,13 @@ void LRU(int size, string a) {
         }
         cout << endl;
     }
+    cout << "Hit : " << hit << " Miss : " << a.length() - hit << endl;
+    cout << "Hit ratio : " << hit / (float)a.length() << endl;
 }
 
 void MIN(int size, string a) {
-    char buf[a.length() + 1];
+    int     hit = 0;
+    char    buf[a.length() + 1];
     strcpy(buf, a.c_str());
     vector<char> cache;
 
@@ -83,6 +92,7 @@ void MIN(int size, string a) {
         }
         cout << buf[i];
         if(find(cache.begin(),cache.end(),buf[i]) != cache.end()) {
+            hit++;
             cout << "  hit     ";
         } 
         else {
@@ -96,7 +106,7 @@ void MIN(int size, string a) {
                 }
                 int max = dist[0];
                 int max_idx = 0;
-                for (int k = 1; k <size; k++) {
+                for (int k = 1; k <size; k++) { 
                     if(max < dist[k]) {
                         max = dist[k];
                         max_idx = k;
@@ -117,6 +127,8 @@ void MIN(int size, string a) {
         }
         cout << endl;
     }
+    cout << "Hit : " << hit << " Miss : " << a.length() - hit << endl;
+    cout << "Hit ratio : " << hit / (float)a.length() << endl;
 }
 
 int main() {
@@ -128,10 +140,11 @@ int main() {
     
     cout << "size : ";
     cin >> cache_size;
-
+    cout << "------FIFO-------" << endl;
     FIFO(cache_size, input);
-    cout << "-------------" << endl;
+    cout << "------LRU--------" << endl;
     LRU(cache_size, input);
-    cout << "-------------" << endl;
+    cout << "------MIN--------" << endl;
     MIN(cache_size, input);
+    cout << "-----------------" << endl;
 }
